@@ -1,0 +1,1 @@
+CREATE STREAM subOrg (Ts: timestamp, Org: int, SubOrg: int) WITH recursive isSubOrg(Ts, Org, SubOrg) AS (SELECT Ts, Org, SubOrg FROM subOrg) UNION (SELECT greatest(subOrg.Ts, isSubOrg.Ts), isSubOrg.Org, subOrg.SubOrg FROM subOrg, isSubOrg WHERE isSubOrg.SubOrg = subOrg.Org) SELECT Org, SubOrg FROM isSubOrg WINDOW[6000, 3000]

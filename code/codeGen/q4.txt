@@ -1,0 +1,1 @@
+CREATE STREAM relateTo (Ts: timestamp, X: int, Y: int) WITH recursive ealiestOrg (Ts, X, min() AS Eid) AS (SELECT Ts, X, X FROM relateTo) UNION (SELECT greatest(relateTo.Ts, ealiestOrg.Ts), relateTo.Y, ealiestOrg.Eid FROM relateTo, ealiestOrg WHERE relateTo.X = ealiestOrg.X) SELECT X, Eid FROM ealiestOrg WINDOW[6000, 3000]
